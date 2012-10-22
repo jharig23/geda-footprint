@@ -1,5 +1,6 @@
 class Position
   require 'ruby-units'
+  include Helper
 
   attr x: Unit("0 mil"), y: Unit("0 mil")
 
@@ -31,22 +32,27 @@ class Position
     math_oper(:-, pos)
   end
 
+  # convert to simple values -1, 0 or 1 based on value
+  def directionalize
+    Position.new(x: sign(self.x), y: sign(self.y))
+  end
+
   def clone
     Position.new(x: self.x, y: self.y)
   end
-  
+
   def to_s
     "Point[x=#{self.x}; y=#{self.y}]"
   end
 
-  private 
+  private
   def math_oper(oper, pos)
     result = self.clone
 
     [:x, :y].each do |getter|
       setter = "#{getter}=".to_sym
       if pos.respond_to?(getter)
-        result.send(setter, 
+        result.send(setter,
                     self.send(getter).send(oper, pos.send(getter)))
       end
     end
