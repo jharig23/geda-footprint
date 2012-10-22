@@ -1,4 +1,5 @@
 class Module
+  # provide attribute with default value
   def attr(hash)
     hash.each do |symbol, default_value|
       getter = symbol
