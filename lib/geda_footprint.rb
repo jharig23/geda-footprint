@@ -18,7 +18,7 @@ require 'geda_footprint/arc'
 
 # Composite elements
 require 'geda_footprint/pad_line'
-
+require 'geda_footprint/smd_two_pad'
 require 'geda_footprint/quad_package'
 
 # Rendering
