@@ -1,3 +1,4 @@
+
 class Module
   # provide attribute with default value
   def attr(hash)
