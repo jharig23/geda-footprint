@@ -1,6 +1,6 @@
-# Polar line is a line implementation which is stored in a 
+# Polar line is a line implementation which is stored in a
 # combination of cartesian and polar coordinates
-module GedaFootprint 
+module GedaFootprint
 
   class PolarLine < PcbElement
     attr :p => Position.origin
@@ -9,7 +9,7 @@ module GedaFootprint
 
     def initialize(hash = {})
       super(hash)
-      # assume p/theta/length style unless 
+      # assume p/theta/length style unless
       # p1/p2 is provided
       if hash.has_key? :p1
         d = hash[:p2] - hash[:p1]
@@ -19,14 +19,18 @@ module GedaFootprint
       end
     end
 
-    def p1 
+    def p1
       self.p
     end
 
-    def p2 
-      
+    def p2
       p1 + Position.new(x: (self.length * Math::cos(self.theta)),
                             y: (self.length * Math::sin(self.theta)))
+    end
+
+    # translation direction is relative to current theta
+    def translate!(direction_in_rads, distance)
+      self.p = PolarLine.new(p: self.p, theta: (direction_in_rads + self.theta), length: distance).p2
     end
   end
 
