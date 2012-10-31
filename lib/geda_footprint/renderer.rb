@@ -12,6 +12,13 @@ module GedaFootprint
       rendered_element
     end
     
+    def render_to_file(element, filename)
+      self.render(element)
+      File.open(filename, "w") do |f|
+        f.puts self.rendered_element
+      end
+    end
+
     def open_line(tag_name)
       @line = tag_name << "["
       @first_unit = true
