@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = 'Library for creating gEDA PCB footprint files'
   s.authors = ['James Harig']
   s.email = 'jharig23@gmail.com'
-  s.files = ["lib/geda_footprint.rb"
+  s.files = ["lib/geda_footprint.rb",
              "lib/geda_footprint/attr.rb", 
              "lib/geda_footprint/units.rb",
              "lib/geda_footprint/quoted.rb",
