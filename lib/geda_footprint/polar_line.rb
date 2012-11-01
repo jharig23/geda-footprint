@@ -24,13 +24,39 @@ module GedaFootprint
     end
 
     def p2
-      p1 + Position.new(x: (self.length * Math::cos(self.theta)),
-                            y: (self.length * Math::sin(self.theta)))
+      position(self.length)
     end
 
+
+    # Create a line which is connected to the current line 
+    # Position is distance from origin of line
+    # Length is the length of the line
+    # Theta is the delta angle between this line and the new one
+    # anchor is the anchor point of the new line. :start, :middle, :end
+    def connected_line(distance, length, theta, anchor )
+      pos1 = self.position(distance)
+      pos1 = case anchor
+             when :start pos1
+             when :middle calculate_point(pos1, -(length / 2), theta)
+             when :end calculate_point(pos1, -length, theta)
+             end
+      PolarLine.new(p: pos1, theta: theta, length: length)
+    end
+
+    # calculate the point on the line, which is the 
+    # specified distance away from the line origin
+    def position(distance)
+      calculate_point(self.p1, distance, self.theta)
+    end
     # translation direction is relative to current theta
     def translate!(direction_in_rads, distance)
       self.p = PolarLine.new(p: self.p, theta: (direction_in_rads + self.theta), length: distance).p2
+    end
+
+    private 
+    def calculate_point(start_position, distance, theta)
+      start_position + Position.new(x: (distance * Math::cos(theta)),
+                                    y: (distance * Math::sin(theta)))
     end
   end
 
