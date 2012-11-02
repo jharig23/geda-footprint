@@ -9,16 +9,12 @@ module GedaFootprint
 
     def initialize(hash = {})
       super(hash)
-      # assume p/theta/length style unless
-      # p1/p2 is provided
-      if hash.has_key? :p1
-        d = hash[:p2] - hash[:p1]
-        self.p = hash[:p1]
-        self.theta = Math.atan2(d.y, d.x)
-        self.length = Math.sqrt(d.x**2 + d.y**2)
-      end
+      
+      digest_line(hash[:line]) if hash.has_key? :line      
+      digest_line_from_points(hash[:p1], hash[:p2]) if hash.has_key? :p1
     end
 
+    
     def p1
       self.p
     end
@@ -70,6 +66,25 @@ module GedaFootprint
       start_position + Position.new(x: (distance * Math::cos(theta)),
                                     y: (distance * Math::sin(theta)))
     end
+
+
+    def digest_line(line)
+      if line.respond_to? :p
+        self.p = line.p
+        self.theta = line.theta
+        self.length = line.length
+      elsif line.respond_to? :p1
+        digest_line_from_points(p1, p2)
+      end
+    end
+    
+    def digest_line_from_points(p1, p2)
+      d = p2 - p1
+      self.p = p1
+      self.theta = Math.atan2(d.y, d.x)
+      self.length = Math.sqrt(d.x**2 + d.y**2)
+    end
+
   end
 
 end
