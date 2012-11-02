@@ -7,7 +7,7 @@ require 'geda_footprint/units'
 require 'geda_footprint/quoted'
 require 'geda_footprint/helper'
 
-# Primitive shapes 
+# Primitive shapes
 require 'geda_footprint/degrees'
 require 'geda_footprint/position'
 
@@ -27,4 +27,5 @@ require 'geda_footprint/smd_two_pad'
 require 'geda_footprint/quad_package'
 
 # Rendering
+require 'geda_footprint/transformation'
 require 'geda_footprint/renderer'

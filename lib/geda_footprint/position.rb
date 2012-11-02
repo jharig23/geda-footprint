@@ -2,9 +2,11 @@ module GedaFootprint
   class Position
     require 'ruby-units'
     include Helper
-    
+
     attr x: Unit("0 mil"), y: Unit("0 mil")
-    
+
+    def translatable; true; end
+
     def initialize(hash = nil)
       unless hash.nil?
         hash.each do |key, value|
@@ -12,7 +14,8 @@ module GedaFootprint
         end
       end
     end
-    
+
+
     def self.origin
       Position.new
     end
@@ -20,36 +23,41 @@ module GedaFootprint
     def element_name
       "Position"
     end
-    
+
     def render_with(renderer)
-      renderer << [x, y]
+      raise 'Position is special, and should not render itself!'
     end
-    
+
+
     def +(pos)
       math_oper(:+, pos)
     end
-    
+
     def -(pos)
       math_oper(:-, pos)
     end
-    
+
     # convert to simple values -1, 0 or 1 based on value
     def directionalize
       Position.new(x: sign(self.x), y: sign(self.y))
     end
-    
+
     def clone
       Position.new(x: self.x, y: self.y)
     end
-    
+
     def to_s
       "Point[x=#{self.x}; y=#{self.y}]"
     end
-    
+
+    def to_a
+      [self.x, self.y]
+    end
+
     private
     def math_oper(oper, pos)
       result = self.clone
-      
+
       [:x, :y].each do |getter|
         setter = "#{getter}=".to_sym
         if pos.respond_to?(getter)
