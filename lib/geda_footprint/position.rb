@@ -28,6 +28,11 @@ module GedaFootprint
       raise 'Position is special, and should not render itself!'
     end
 
+    # theta is absolute
+    def connect_line(length, theta, anchor = nil)
+      PolarLine.new(p: self, length: length, theta: theta)
+    end
+
 
     def +(pos)
       math_oper(:+, pos)

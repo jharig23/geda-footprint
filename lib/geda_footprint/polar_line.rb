@@ -9,12 +9,12 @@ module GedaFootprint
 
     def initialize(hash = {})
       super(hash)
-      
-      digest_line(hash[:line]) if hash.has_key? :line      
+
+      digest_line(hash[:line]) if hash.has_key? :line
       digest_line_from_points(hash[:p1], hash[:p2]) if hash.has_key? :p1
     end
 
-    
+
     def p1
       self.p
     end
@@ -47,6 +47,11 @@ module GedaFootprint
       PolarLine.new(p: pos1, theta: theta, length: length)
     end
 
+    # Connect a line to the end of this one
+    def connect_line(length, theta, anchor)
+      connected_line(self.length, length, theta, anchor = :start)
+    end
+
     # calculate the point on the line, which is the
     # specified distance away from the line origin
     def position(distance)
@@ -77,7 +82,7 @@ module GedaFootprint
         digest_line_from_points(p1, p2)
       end
     end
-    
+
     def digest_line_from_points(p1, p2)
       d = p2 - p1
       self.p = p1

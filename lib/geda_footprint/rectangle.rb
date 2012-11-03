@@ -1,16 +1,12 @@
 module GedaFootprint
   class Rectangle < PcbElement
-    attr :p1 => Position.origin, :p2 => Position.origin
+
+    # p is top left
+    attr :p => Position.origin
+    attr :width => Unit('0 mm')
+    attr :height => Unit('0 mm')
     attr :thickness => Unit("4 mil")
 
-    def initialize(hash)
-
-      if hash.includes? :p
-        # p implies width/height
-        self.p1 = hash[:p]
-        self.p2 = p1 + Point.new(x: hash[:width], y: hash[:height])
-      end
-    end
 
     def render_with(renderer)
       generate_lines.each do |line|
@@ -19,24 +15,37 @@ module GedaFootprint
     end
 
     def generate_lines
-      lines = []
+      [
+       Line.new(p1: top_left, p2: top_right, thickness: self.thickness),
+       Line.new(p1: top_right, p2, bottom_right, thickness: self.thickness),
+       Line.new(p1: bottom_right, p2: bottom_left, thickness: self.thickness),
+       Line.new(p1: bottom_left, p2: top_left, thickness, self.thickness)
+      ]
 
-      top_left = self.p1
-      bottom_right = self.p2
-
-      top_right = Position.new(x: bottom_right.x, y: top_left.y)
-      bottom_left =  Position.new(x: top_left.x, y: bottom_right.y)
-
-      lines << Line.new(p1: top_left,
-                        p2: top_right, thickness: self.thickness)
-      lines << Line.new(p1: top_right,
-                        p2: bottom_right, thickness: self.thickness)
-      lines << Line.new(p1: bottom_right,
-                        p2: bottom_left, thickness: self.thickness)
-      lines << Line.new(p1: bottom_left,
-                        p2: top_left, thickness: self.thickness)
-      lines
     end
 
+    # create a new rectangle with specified width and height,
+    # centered in this one.
+    def new_centered(hash)
+      Rectangle.new(hash.merge(p: Position.new(x: (self.width, hash[:width]) / 2,
+                                               y: (self.height - ((self.height - hash[:height])/ 2)))))
+    end
+
+
+    def top_left
+      self.p
+    end
+
+    def top_right
+      p + Position.new(x: self.width)
+    end
+
+    def bottom_left
+      p + Position.new(y: self.heght)
+    end
+
+    def bottom_right
+      p + Position(x: self.width, y: self.width)
+    end
   end
 end

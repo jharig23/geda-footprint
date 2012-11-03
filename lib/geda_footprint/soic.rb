@@ -20,9 +20,9 @@ module GedaFootprint
     end
 
     def build
-      add_child(Rectangle.new(p: Position.new(x: Unit('0 mm'), y: self.height),
-                              width: self.width,
-                              height: self.height))
+      border = Rectangle.new(p: Position.new(x: Unit('0 mm'), y: self.height),
+                             width: self.width,
+                             height: self.height))
 
       # spoof position, we'll correct it after.
       left_pads = PadLine.new(pad_attr(p: Position.origin,
