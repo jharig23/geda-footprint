@@ -26,7 +26,11 @@ module GedaFootprint
 
     # Create n connected lines, which are equidistant from eachother
     def connected_lines(n, length, theta, anchor)
-      distance_offset = self.length / (n - 1)
+      distance_offset = if n == 1 
+                          Unit('0 mm') 
+                        else 
+                          self.length / (n - 1) 
+                        end
       (0 .. (n-1)).to_a.map do |i|
         connected_line(i*distance_offset, length, theta, anchor)
       end
