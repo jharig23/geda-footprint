@@ -81,6 +81,21 @@ module GedaFootprint
                           number_of_pads: 1,
                           anchor: anchor)
       
+      unless hash[:polarized_pin].nil?
+        polarized_pin = hash[:polarized_pin]
+        space = Unit('0.8 mm')
+        if polarized_pin == 1
+          add_child(Rectangle.new(p: Position.new(x: space * -1,
+                                                  y: height),
+                                  width: space,
+                                  height: height))
+        else
+          add_child(Rectangle.new(p: Position.new(x: width,
+                                                  y: height),
+                                  width: space,
+                                  height: height))
+        end
+      end
       add_child(border)
       add_child(left)
       add_child(right)
