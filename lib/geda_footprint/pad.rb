@@ -30,7 +30,7 @@ module GedaFootprint
                      quoted(self.number), self.flags]
         renderer.close_line("Pad")
       else
-        @split_pads.each { |pad| renderer.render(pad) }
+        @split_pads.each { |pad| pad.render_with(renderer) }
       end
 
     end
@@ -45,7 +45,7 @@ module GedaFootprint
 
       if pl.length > self.thickness
         adjustment = self.thickness / 2
-        pl.translate!(pl.theta, adjustment)
+        pl.translate!(0, adjustment)
         pl.length = pl.length - self.thickness
         self.p1 = pl.p
         self.p2 = pl.p2

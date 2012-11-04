@@ -10,16 +10,16 @@ module GedaFootprint
 
     def render_with(renderer)
       generate_lines.each do |line|
-        renderer.render(line)
+        line.render_with(renderer)
       end
     end
 
     def generate_lines
       [
        Line.new(p1: top_left, p2: top_right, thickness: self.thickness),
-       Line.new(p1: top_right, p2, bottom_right, thickness: self.thickness),
+       Line.new(p1: top_right, p2: bottom_right, thickness: self.thickness),
        Line.new(p1: bottom_right, p2: bottom_left, thickness: self.thickness),
-       Line.new(p1: bottom_left, p2: top_left, thickness, self.thickness)
+       Line.new(p1: bottom_left, p2: top_left, thickness: self.thickness)
       ]
 
     end
@@ -27,25 +27,34 @@ module GedaFootprint
     # create a new rectangle with specified width and height,
     # centered in this one.
     def new_centered(hash)
-      Rectangle.new(hash.merge(p: Position.new(x: (self.width, hash[:width]) / 2,
-                                               y: (self.height - ((self.height - hash[:height])/ 2)))))
+      inner_width = hash[:width]
+      inner_height = hash[:height]
+
+      d_width = self.width - inner_width
+      d_height = self.height - inner_height
+      
+      pos = Position.new(x: (self.p.x + (d_width / 2)), y: self.p.y - (d_height / 2))
+
+      Rectangle.new(hash.merge(p: pos))
     end
 
-
+    def center_position
+      self.p + Position.new(x: (self.width / 2), y: (self.height/2))
+    end
     def top_left
       self.p
     end
 
     def top_right
-      p + Position.new(x: self.width)
+      p + Position.new(y: Unit('0 mm'), x: self.width)
     end
 
     def bottom_left
-      p + Position.new(y: self.heght)
+      p + Position.new(y: -self.height)
     end
 
     def bottom_right
-      p + Position(x: self.width, y: self.width)
+      p + Position.new(x: self.width, y: -self.height)
     end
   end
 end

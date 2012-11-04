@@ -10,7 +10,8 @@ module GedaFootprint
     end
 
     def transform(p)
-      Position.new(x: p.x, y: (@largest_y - p.y))
+
+     Position.new(x: p.x, y: (@largest_y - p.y))
     end
 
     def render_attribute(thing)

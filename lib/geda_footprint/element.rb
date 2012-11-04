@@ -30,7 +30,7 @@ module GedaFootprint
       renderer.append_line "("
 
       @children.each do |child|
-        renderer.render(child)
+        child.render_with(renderer)
       end
 
       renderer.append_line ")"

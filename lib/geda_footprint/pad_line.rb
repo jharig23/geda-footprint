@@ -17,20 +17,19 @@ module GedaFootprint
 
 
     def generate_pads()
-
-      self.length = self.number_of_pads * self.pad_separation
+      self.length = (self.number_of_pads - 1) * self.pad_separation
       tangent_lines = connected_lines(self.number_of_pads, self.pad_length, 90.degrees, self.anchor)
       pad_number = self.first_pad_number
       tangent_lines.map do |line|
         number = pad_number
         pad_number = pad_number + 1
-        Pad.new(p1: line.p1, p2: line.p2, thickness: self.pad_width, number: number)
+        Pad.new(p1: line.p1, p2: line.p2, thickness: self.pad_width, number: number, adjust_endpoints: true)
       end
     end
 
     def render_with(renderer)
       generate_pads.each do |pad|
-        renderer.render(pad)
+        pad.render_with(renderer)
       end
     end
 

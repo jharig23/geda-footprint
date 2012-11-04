@@ -41,10 +41,10 @@ module GedaFootprint
       pos1 = self.position(distance)
       pos1 = case anchor
              when :start then pos1
-             when :middle then calculate_point(pos1, -(length / 2), theta)
-             when :end then calculate_point(pos1, -length, theta)
+             when :middle then calculate_point(pos1, -(length / 2), self.theta + theta)
+             when :end then calculate_point(pos1, -length, self.theta + theta)
              end
-      PolarLine.new(p: pos1, theta: theta, length: length)
+      PolarLine.new(p: pos1, theta: (self.theta + theta), length: length)
     end
 
     # Connect a line to the end of this one
@@ -59,7 +59,8 @@ module GedaFootprint
     end
     # translation direction is relative to current theta
     def translate!(direction_in_rads, distance)
-      self.p = PolarLine.new(p: self.p, theta: (direction_in_rads + self.theta), length: distance).p2
+      new_point = calculate_point(self.p1, distance, direction_in_rads + self.theta)
+      self.p = new_point
     end
 
     def to_s

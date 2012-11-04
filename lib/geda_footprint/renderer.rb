@@ -9,7 +9,6 @@ module GedaFootprint
 
     # Render should not be called by elements!
     def render(element)
-
       if element.respond_to?(:render_with)
         @transformation = Transformation.new
         element.render_with(@transformation)
