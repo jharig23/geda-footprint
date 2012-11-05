@@ -37,7 +37,7 @@ module GedaFootprint
                                     height: inner_height)
 
       add_child(border)
-      add_child(pad_rect)
+      #add_child(pad_rect)
       left = PadLine.new(pad_attrs(p1: pad_rect.top_left,
                                    p2: pad_rect.bottom_left,
                                    first_pad_number: 1,
@@ -49,6 +49,18 @@ module GedaFootprint
                                     anchor: self.pad_anchor))
       add_child(left)
       add_child(right)
+
+      # add pin 1 designation
+      l = PolarLine.new(p1: border.top_left, p2: pad_rect.top_left)
+      designator = Arc.new(p: border.top_left + Position.new(x: Unit('15 mil'),
+                                                             y: Unit('15 mil')*-1),
+                           width: Unit('10 mil'),
+                           height: Unit('10 mil'),
+                           start_angle: 0,
+                           delta_angle: 360,
+                           thickness: Unit('4 mil'))
+      add_child(designator)
+                           
     end
 
     def pad_attrs(hash)

@@ -1,5 +1,5 @@
 module GedaFootprint
-  class Arc
+  class Arc < PcbElement
     attr :p => Position.origin
     attr :width => Unit('0 mil')
     attr :height => Unit('0 mil')

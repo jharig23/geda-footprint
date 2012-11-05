@@ -67,6 +67,10 @@ module GedaFootprint
       self.p = new_point
     end
 
+    def bisection_point
+      position(self.length / 2)
+    end
+
     def to_s
       "PolarLine[p1=#{p1}, p2=#{p2}]"
     end
