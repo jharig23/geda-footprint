@@ -5,7 +5,7 @@ module GedaFootprint
     attr :width => Unit('0 mm')
     attr :height => Unit('0 mm')
     attr :pad_length => Unit('0 mm')
-    attr :pad_width => Unit('0 mm')
+    attr :pad_thickness => Unit('0 mm')
     attr :pad_separation => Unit('0 mm')
 
     attr :pad_line_separation => Unit('0 mm')
@@ -64,7 +64,7 @@ module GedaFootprint
     end
 
     def pad_attrs(hash)
-      {pad_width: self.pad_width,
+      {pad_thickness: self.pad_thickness,
         pad_length: self.pad_length,
         pad_separation: self.pad_separation,
         number_of_pads: (self.number_of_pads / 2)

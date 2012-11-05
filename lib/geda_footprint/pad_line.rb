@@ -7,7 +7,7 @@ module GedaFootprint
     attr :number_of_pads => 1
 
     attr :pad_separation => Unit("0 mil")
-    attr :pad_width => Unit("0 mil")
+    attr :pad_thickness => Unit("0 mil")
     attr :pad_length => Unit("0 mil")
 
     attr :anchor => :middle
@@ -23,7 +23,7 @@ module GedaFootprint
       tangent_lines.map do |line|
         number = pad_number
         pad_number = pad_number + 1
-        Pad.new(p1: line.p1, p2: line.p2, thickness: self.pad_width, number: number, adjust_endpoints: true)
+        Pad.new(p1: line.p1, p2: line.p2, thickness: self.pad_thickness, number: number, adjust_endpoints: true)
       end
     end
 
