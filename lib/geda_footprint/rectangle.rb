@@ -6,8 +6,8 @@ module GedaFootprint
     attr :width => Unit('0 mm')
     attr :height => Unit('0 mm')
     attr :thickness => Unit("4 mil")
-    
-    
+
+
     def render_with(renderer)
       generate_lines.each do |line|
         line.render_with(renderer)
@@ -16,32 +16,31 @@ module GedaFootprint
 
     def generate_lines
       ccw_lines.map do |polar_line|
-        Line.new(p1: polar_line.p1, p2: polar_line.p2, 
+        Line.new(p1: polar_line.p1, p2: polar_line.p2,
                  thickness: self.thickness)
       end
     end
-    
+
     def ccw_points
       [top_left, bottom_left, bottom_right, top_right]
     end
 
     def ccw_lines
       points = ccw_points
-      (0..3).to_a.map do |i| 
+      (0..3).to_a.map do |i|
         PolarLine.new(p1: points[i], p2: points[(i+1)%4])
       end
     end
 
     # convert the rect to a pad
     def as_pad(hash)
-      Pad.new(p1: PolarLine.new(p1: top_left, 
-                                p2: bottom_left).bisection_point,
-              p2: PolarLine.new(p1: top_right, 
-                                p2: bottom_right).bisection_point,
-              thickness: self.height,
-              number: hash[:number])
+      Pad.new(hash.merge(p1: PolarLine.new(p1: top_left,
+                                           p2: bottom_left).bisection_point,
+                         p2: PolarLine.new(p1: top_right,
+                                           p2: bottom_right).bisection_point,
+                         thickness: self.height))
     end
-    
+
     def translate!(anchor, to_position)
       if self.respond_to? anchor
         anchor_position = send(anchor)
@@ -54,6 +53,7 @@ module GedaFootprint
     # center self in the provided rect
     def center_in!(rect)
       translate!(:center, rect.center)
+      self
     end
 
     # create a new rectangle with specified width and height,
@@ -62,7 +62,7 @@ module GedaFootprint
       rect = Rectangle.new(hash)
       rect.center_in!(self)
     end
-    
+
     def sized(hash)
       Rectangle.new(p: self.p,
                     width: case
@@ -80,7 +80,7 @@ module GedaFootprint
     def center_position
       self.p + Position.new(x: (self.width / 2), y: (self.height/-2))
     end
-    
+
     def center
       center_position
     end
