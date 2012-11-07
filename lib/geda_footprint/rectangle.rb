@@ -6,8 +6,8 @@ module GedaFootprint
     attr :width => Unit('0 mm')
     attr :height => Unit('0 mm')
     attr :thickness => Unit("4 mil")
-
-
+    
+    
     def render_with(renderer)
       generate_lines.each do |line|
         line.render_with(renderer)
@@ -15,32 +15,76 @@ module GedaFootprint
     end
 
     def generate_lines
-      [
-       Line.new(p1: top_left, p2: top_right, thickness: self.thickness),
-       Line.new(p1: top_right, p2: bottom_right, thickness: self.thickness),
-       Line.new(p1: bottom_right, p2: bottom_left, thickness: self.thickness),
-       Line.new(p1: bottom_left, p2: top_left, thickness: self.thickness)
-      ]
+      ccw_lines.map do |polar_line|
+        Line.new(p1: polar_line.p1, p2: polar_line.p2, 
+                 thickness: self.thickness)
+      end
+    end
+    
+    def ccw_points
+      [top_left, bottom_left, bottom_right, top_right]
+    end
 
+    def ccw_lines
+      points = ccw_points
+      (0..3).to_a.map do |i| 
+        PolarLine.new(p1: points[i], p2: points[(i+1)%4])
+      end
+    end
+
+    # convert the rect to a pad
+    def as_pad(hash)
+      Pad.new(p1: PolarLine.new(p1: top_left, 
+                                p2: bottom_left).bisection_point,
+              p2: PolarLine.new(p1: top_right, 
+                                p2: bottom_right).bisection_point,
+              thickness: self.height,
+              number: hash[:number])
+    end
+    
+    def translate!(anchor, to_position)
+      if self.respond_to? anchor
+        anchor_position = send(anchor)
+        delta = to_position - anchor_position
+        self.p = self.p + delta
+      end
+      self
+    end
+
+    # center self in the provided rect
+    def center_in!(rect)
+      translate!(:center, rect.center)
     end
 
     # create a new rectangle with specified width and height,
     # centered in this one.
     def new_centered(hash)
-      inner_width = hash[:width]
-      inner_height = hash[:height]
-
-      d_width = self.width - inner_width
-      d_height = self.height - inner_height
-      
-      pos = Position.new(x: (self.p.x + (d_width / 2)), y: self.p.y - (d_height / 2))
-
-      Rectangle.new(hash.merge(p: pos))
+      rect = Rectangle.new(hash)
+      rect.center_in!(self)
+    end
+    
+    def sized(hash)
+      Rectangle.new(p: self.p,
+                    width: case
+                           when hash[:width] then hash[:width]
+                           when hash[:delta_width] then self.width + hash[:delta_width]
+                           else self.width
+                           end,
+                    height: case
+                            when hash[:height] then hash[:height]
+                            when hash[:delta_height] then self.height + hash[:delta_height]
+                            else self.height
+                            end)
     end
 
     def center_position
-      self.p + Position.new(x: (self.width / 2), y: (self.height/2))
+      self.p + Position.new(x: (self.width / 2), y: (self.height/-2))
     end
+    
+    def center
+      center_position
+    end
+
     def top_left
       self.p
     end

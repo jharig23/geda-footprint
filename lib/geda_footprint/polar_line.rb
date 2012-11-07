@@ -23,6 +23,17 @@ module GedaFootprint
       position(self.length)
     end
 
+    # Create a new polar line of the specified    
+    def new_centered(length)
+      connected_line(self.length / 2, length, 0.degrees, :middle)
+    end
+    
+    def as_pad(hash)
+      Pad.new(hash.merge(p1: self.p1, p2: self.p2))
+    end
+    def pad_line(hash)
+      PadLine.new(hash.merge(line: self))
+    end
 
     # Create n connected lines, which are equidistant from eachother
     def connected_lines(n, length, theta, anchor)
@@ -70,6 +81,7 @@ module GedaFootprint
     def bisection_point
       position(self.length / 2)
     end
+    
 
     def to_s
       "PolarLine[p1=#{p1}, p2=#{p2}]"
