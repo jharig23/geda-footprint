@@ -2,28 +2,28 @@ module GedaFootprint
   # pads are drawn in a counter clockwise position.
   # pin1 is top left
   class Soic < Element
-    attr :width => Unit('0 mm')
-    attr :height => Unit('0 mm')
     attr :pad_length => Unit('0 mm')
     attr :pad_thickness => Unit('0 mm')
-    attr :pad_separation => Unit('0 mm')
+    attr :pitch => Unit('0 mm')
 
-    attr :pad_line_separation => Unit('0 mm')
+    attr :pad_rect => nil
     attr :pad_anchor => :middle
     attr :number_of_pads => 2
 
 
     def initialize(hash)
       super(hash)
-      build()
-    end
+      pads_per_side = number_of_pads / 2
+      self.pad_rect.height  = (pads_per_side - 1) * pitch
 
+      border_delta = Unit('1.0 mm')
+      border = pad_rect.sized(delta_width: border_delta, delta_height: border_delta)
+      border.translate!(:bottom_left, Position.origin)
 
-    def build
-      # this needs to be fixed
-      inner_width =  self.pad_line_separation
-      inner_height = ((self.number_of_pads / 2) - 1) * self.pad_separation
+      pad_rect.center_in!(border)
+      pad_rect.vertical_lines.each do |line|
 
+      end
       self.width = (2 * self.pad_length) + inner_width + Unit('2 mm')
       self.height = inner_height + Unit('2 mm')
       border = Rectangle.new(p: Position.new(x: Unit('0 mm'),
