@@ -17,7 +17,7 @@ module GedaFootprint
       super(hash)
       build()
     end
-    
+
 
     def build
       # this needs to be fixed
@@ -30,7 +30,7 @@ module GedaFootprint
                                              y: self.height),
                              width: self.width,
                              height: self.height)
-      
+
       self.mark_position = border.center_position
 
       pad_rect = border.new_centered(width: inner_width,
@@ -51,7 +51,6 @@ module GedaFootprint
       add_child(right)
 
       # add pin 1 designation
-      l = PolarLine.new(p1: border.top_left, p2: pad_rect.top_left)
       designator = Arc.new(p: border.top_left + Position.new(x: Unit('15 mil'),
                                                              y: Unit('15 mil')*-1),
                            width: Unit('10 mil'),
@@ -60,7 +59,7 @@ module GedaFootprint
                            delta_angle: 360,
                            thickness: Unit('4 mil'))
       add_child(designator)
-                           
+
     end
 
     def pad_attrs(hash)
