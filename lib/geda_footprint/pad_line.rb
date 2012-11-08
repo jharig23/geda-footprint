@@ -6,7 +6,7 @@ module GedaFootprint
     attr :first_pad_number => 1
     attr :number_of_pads => 1
 
-    attr :pad_separation => Unit("0 mil")
+    attr :pitch => Unit("0 mil")
     attr :pad_thickness => Unit("0 mil")
     attr :pad_length => Unit("0 mil")
 
@@ -17,7 +17,7 @@ module GedaFootprint
 
 
     def generate_pads()
-      self.length = (self.number_of_pads - 1) * self.pad_separation
+      self.length = (self.number_of_pads - 1) * self.pitch
       tangent_lines = connected_lines(self.number_of_pads, self.pad_length, 90.degrees, self.anchor)
       pad_number = self.first_pad_number
       tangent_lines.map do |line|

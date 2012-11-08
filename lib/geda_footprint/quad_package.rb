@@ -41,7 +41,7 @@ module GedaFootprint
 
       pad_rect.ccw_lines.each_with_index do |line, i|
         cline = line.new_centered(side_length)
-        add_child(cline.pad_line(pad_separation: self.pitch,
+        add_child(cline.pad_line(pitch: self.pitch,
                                  pad_thickness: self.pad_thickness,
                                  pad_length: self.pad_length,
                                  number_of_pads: self.number_of_pads / 4,

@@ -19,42 +19,25 @@ module GedaFootprint
       border_delta = Unit('1.0 mm')
       border = pad_rect.sized(delta_width: border_delta, delta_height: border_delta)
       border.translate!(:bottom_left, Position.origin)
-
+      
       pad_rect.center_in!(border)
-      pad_rect.vertical_lines.each do |line|
-
+      pad_rect.vertical_lines.each_with_index do |polar_line, i|
+        pad_line = polar_line.pad_line(first_pad_number: (i * pads_per_side) - 1,
+                                       number_of_pads: pads_per_side,
+                                       pitch: pitch,
+                                       pad_thickness: pad_thickness,
+                                       pad_length: pad_length,
+                                       anchor: pad_anchor)
+        add_child(pad_line)
       end
-      self.width = (2 * self.pad_length) + inner_width + Unit('2 mm')
-      self.height = inner_height + Unit('2 mm')
-      border = Rectangle.new(p: Position.new(x: Unit('0 mm'),
-                                             y: self.height),
-                             width: self.width,
-                             height: self.height)
-
-      self.mark_position = border.center_position
-
-      pad_rect = border.new_centered(width: inner_width,
-                                    height: inner_height)
 
       add_child(border)
       #add_child(pad_rect)
-      left = PadLine.new(pad_attrs(p1: pad_rect.top_left,
-                                   p2: pad_rect.bottom_left,
-                                   first_pad_number: 1,
-                                   anchor: self.pad_anchor))
-
-      right = PadLine.new(pad_attrs(p1: pad_rect.bottom_right,
-                                    p2: pad_rect.top_right,
-                                    first_pad_number: (self.number_of_pads / 2) + 1,
-                                    anchor: self.pad_anchor))
-      add_child(left)
-      add_child(right)
-
       # add pin 1 designation
-      designator = Arc.new(p: border.top_left + Position.new(x: Unit('15 mil'),
-                                                             y: Unit('15 mil')*-1),
-                           width: Unit('10 mil'),
-                           height: Unit('10 mil'),
+      designator = Arc.new(p: border.top_left + Position.new(x: Unit('10 mil'),
+                                                             y: Unit('10 mil')*-1),
+                           width: Unit('5 mil'),
+                           height: Unit('5 mil'),
                            start_angle: 0,
                            delta_angle: 360,
                            thickness: Unit('4 mil'))
