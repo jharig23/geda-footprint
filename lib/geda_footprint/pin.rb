@@ -1,7 +1,5 @@
 module GedaFootprint
-  class Pin
-    include Helper
-    
+  class Pin < PcbElement
     attr :p => Position.origin
     attr :diameter => Unit("0 mil")
     attr :clearance => Unit("0 mil")
