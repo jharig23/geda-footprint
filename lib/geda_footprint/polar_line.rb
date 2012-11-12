@@ -34,26 +34,28 @@ module GedaFootprint
     def pad_line(hash)
       PadLine.new(hash.merge(line: self))
     end
+    
 
     # Create n connected lines, which are equidistant from eachother
     def connected_lines(n, length, theta, anchor)
-      distance_offset = if n == 1 
-                          Unit('0 mm') 
-                        else 
-                          self.length / (n - 1) 
-                        end
-      (0 .. (n-1)).to_a.map do |i|
-        connected_line(i*distance_offset, length, theta, anchor)
+      positions(n).map do | pos|
+        connected_line(pos, length, theta, anchor)
       end
     end
 
     # Create a line which is connected to the current line
-    # Position is distance from origin of line
+    # Position_or_distance is distance from origin of line, or general position
     # Length is the length of the line
     # Theta is the delta angle between this line and the new one
     # anchor is the anchor point of the new line. :start, :middle, :end
-    def connected_line(distance, length, theta, anchor )
-      pos1 = self.position(distance)
+    def connected_line(distance_or_position, length, theta, anchor )
+      pos1 = case 
+             when (distance_or_position.respond_to?(:x) and distance_or_position.respond_to?(:y))
+               distance_or_position
+             else
+               self.position(distance_or_position)
+             end
+
       pos1 = case anchor
              when :start then pos1
              when :middle then calculate_point(pos1, -(length / 2), self.theta + theta)
@@ -67,11 +69,23 @@ module GedaFootprint
       connected_line(self.length, length, theta, anchor = :start)
     end
 
+    # Create n positions which are equidistant from eachother 
+    def positions(n)
+      distance_offset = if n == 1 
+                          Unit('0 mm') 
+                        else 
+                          self.length / (n - 1) 
+                        end
+      (0 .. (n-1)).to_a.map { |i| position(i*distance_offset) }
+    end
+      
+        
     # calculate the point on the line, which is the
     # specified distance away from the line origin
     def position(distance)
       calculate_point(self.p1, distance, self.theta)
     end
+
     # translation direction is relative to current theta
     def translate!(direction_in_rads, distance)
       new_point = calculate_point(self.p1, distance, direction_in_rads + self.theta)

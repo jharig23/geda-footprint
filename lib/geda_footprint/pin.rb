@@ -3,7 +3,7 @@ module GedaFootprint
     include Helper
     
     attr :p => Position.origin
-    attr :thickness => Unit("0 mil")
+    attr :diameter => Unit("0 mil")
     attr :clearance => Unit("0 mil")
     attr :mask_dia => Unit("0 mil")
     attr :drill_dia => Unit("0 mil")
@@ -13,7 +13,7 @@ module GedaFootprint
     
     def render_with(renderer)
       renderer.open_line("Pin")
-      renderer << [self.p, self.thickness, self.clearance, self.mask_dia,
+      renderer << [self.p, self.diameter, self.clearance, self.mask_dia,
                    self.drill_dia, self.name, quoted(self.number), self.flags]
       renderer.close_line("Pin")
     end

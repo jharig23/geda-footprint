@@ -22,7 +22,7 @@ module GedaFootprint
       
       pad_rect.center_in!(border)
       pad_rect.vertical_lines.each_with_index do |polar_line, i|
-        pad_line = polar_line.pad_line(first_pad_number: (i * pads_per_side) - 1,
+        pad_line = polar_line.pad_line(first_pad_number: (i * pads_per_side) + 1,
                                        number_of_pads: pads_per_side,
                                        pitch: pitch,
                                        pad_thickness: pad_thickness,

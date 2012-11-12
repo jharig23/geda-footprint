@@ -1,37 +1,33 @@
 # PadLine is a line of pads
 
 module GedaFootprint
-  class PadLine < PolarLine
+  class PadLine < ObjectLine
 
     attr :first_pad_number => 1
-    attr :number_of_pads => 1
-
-    attr :pitch => Unit("0 mil")
     attr :pad_thickness => Unit("0 mil")
     attr :pad_length => Unit("0 mil")
 
-    attr :anchor => :middle
-    def initialize(hash)
+    
+    def initialize(hash, &callback)
       super(hash)
+      @pad_callback = callback
     end
-
-
-    def generate_pads()
-      self.length = (self.number_of_pads - 1) * self.pitch
-      tangent_lines = connected_lines(self.number_of_pads, self.pad_length, 90.degrees, self.anchor)
+    
+    
+    def generate_objects()
+      tangent_lines = connected_lines(self.number_of_things, 
+                                      self.pad_length, 90.degrees, 
+                                      self.anchor)
       pad_number = self.first_pad_number
-      tangent_lines.map do |line|
+      puts "first pad number = #{self.first_pad_number}"
+      tangent_lines.each_with_index.map do |line, i|
         number = pad_number
         pad_number = pad_number + 1
-        Pad.new(p1: line.p1, p2: line.p2, thickness: self.pad_thickness, number: number, adjust_endpoints: true)
+        pad = line.as_pad(thickness: self.pad_thickness, number: number, 
+                    adjust_endpoints: true)
+         @pad_callback.call(i, pad) unless @pad_callback.nil?
+        pad
       end
     end
-
-    def render_with(renderer)
-      generate_pads.each do |pad|
-        pad.render_with(renderer)
-      end
-    end
-
   end
 end
