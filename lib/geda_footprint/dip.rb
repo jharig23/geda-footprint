@@ -11,12 +11,13 @@ module GedaFootprint
     attr :number_of_pins => 2
 
 
-    def initialize(hash)
+    def initialize(hash, &pin_callback)
       super(hash)
+      @pin_callback = pin_callback
       pins_per_side = number_of_pins / 2
       self.pin_rect.height  = (pins_per_side - 1) * pitch
 
-      border_delta = Unit('1.0 mm')
+      border_delta = self.drill_diameter + Unit('2.0 mm')
       border = pin_rect.sized(delta_width: border_delta, delta_height: border_delta)
       border.translate!(:bottom_left, Position.origin)
       

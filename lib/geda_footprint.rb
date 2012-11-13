@@ -27,6 +27,7 @@ require 'geda_footprint/pad_line'
 require 'geda_footprint/pin_line'
 require 'geda_footprint/smd_two_pad'
 require 'geda_footprint/soic'
+require 'geda_footprint/dip'
 require 'geda_footprint/quad_package'
 
 # Rendering
