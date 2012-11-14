@@ -8,9 +8,8 @@ module GedaFootprint
     attr :pad_length => Unit("0 mil")
 
     
-    def initialize(hash, &callback)
+    def initialize(hash)
       super(hash)
-      @pad_callback = callback
     end
     
     
@@ -24,8 +23,7 @@ module GedaFootprint
         number = pad_number
         pad_number = pad_number + 1
         pad = line.as_pad(thickness: self.pad_thickness, number: number, 
-                    adjust_endpoints: true)
-         @pad_callback.call(i, pad) unless @pad_callback.nil?
+                    adjust_endpoints: true)         
         pad
       end
     end

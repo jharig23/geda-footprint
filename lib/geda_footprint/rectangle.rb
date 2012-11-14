@@ -35,11 +35,26 @@ module GedaFootprint
     # returns the vertical lines of the rectangle from left to right
     # orientation of lines is ccw
     def vertical_lines()
-      points = ccw_points
-      [0, 2].map do |i|
-        PolarLine.new(p1: points[i], p2: points[(i+1)%4])
+      [
+       PolarLine.new(p1: top_left, p2: bottom_left),
+       PolarLine.new(p1: bottom_right, p2: top_right)
+      ]
+    end
+
+    
+    # create lines like a ladder
+    # lines are left to right
+    def ladder_lines(n)
+      left_positions = PolarLine.new(p1: top_left, 
+                                     p2: bottom_left).positions(n)
+      right_positions = PolarLine.new(p1: top_right, 
+                                      p2: bottom_right).positions(n)
+      left_positions.each_with_index.map do |left_position, i|
+        right_position = right_positions[i]
+        PolarLine.new(p1: left_position, p2: right_position)
       end
     end
+    
     # convert the rect to a pad
     def as_pad(hash)
       Pad.new(hash.merge(p1: PolarLine.new(p1: top_left,

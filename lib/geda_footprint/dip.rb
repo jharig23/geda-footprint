@@ -11,9 +11,9 @@ module GedaFootprint
     attr :number_of_pins => 2
 
 
-    def initialize(hash, &pin_callback)
+    def initialize(hash)
       super(hash)
-      @pin_callback = pin_callback
+      
       pins_per_side = number_of_pins / 2
       self.pin_rect.height  = (pins_per_side - 1) * pitch
 

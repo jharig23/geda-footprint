@@ -35,7 +35,7 @@ module GedaFootprint
       PadLine.new(hash.merge(line: self))
     end
     
-    def pin_line(hash, pin_callback)
+    def pin_line(hash, pin_callback = nil)
       PinLine.new(hash.merge(line: self), pin_callback)
     end
 

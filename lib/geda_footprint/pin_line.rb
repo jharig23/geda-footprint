@@ -8,7 +8,7 @@ module GedaFootprint
     attr :drill_diameter => Unit("0 mil")
 
     
-    def initialize(hash, &callback)
+    def initialize(hash, callback = nil)
       super(hash)
       @callback = callback
     end
