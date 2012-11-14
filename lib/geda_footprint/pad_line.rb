@@ -18,7 +18,6 @@ module GedaFootprint
                                       self.pad_length, 90.degrees, 
                                       self.anchor)
       pad_number = self.first_pad_number
-      puts "first pad number = #{self.first_pad_number}"
       tangent_lines.each_with_index.map do |line, i|
         number = pad_number
         pad_number = pad_number + 1
