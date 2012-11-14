@@ -27,7 +27,7 @@ module GedaFootprint
                                  pin_diameter: pin_diameter,
                                  drill_diameter: drill_diameter)
         add_child(pin_line)
-
+      end
       add_child(border)
       #add_child(pin_rect)
       # add pin 1 designation
@@ -38,8 +38,7 @@ module GedaFootprint
                            start_angle: 0,
                            delta_angle: 360,
                            thickness: Unit('4 mil'))
-        add_child(designator)
-      end
+      add_child(designator)
     end
   end
 end
