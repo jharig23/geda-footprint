@@ -35,8 +35,8 @@ module GedaFootprint
       PadLine.new(hash.merge(line: self))
     end
     
-    def pin_line(hash, pin_callback = nil)
-      PinLine.new(hash.merge(line: self), pin_callback)
+    def pin_line(hash)
+      PinLine.new(hash.merge(line: self))
     end
 
     # Create n connected lines, which are equidistant from eachother

@@ -1,4 +1,4 @@
-# PadLine is a line of pads
+# PinLine is a line of pins
 
 module GedaFootprint
   class PinLine < ObjectLine
@@ -8,11 +8,10 @@ module GedaFootprint
     attr :drill_diameter => Unit("0 mil")
 
     
-    def initialize(hash, callback = nil)
+    def initialize(hash)
       super(hash)
-      @callback = callback
     end
-    
+
     
     def generate_objects()
       pin_positions = positions(self.number_of_things)
@@ -22,7 +21,6 @@ module GedaFootprint
         pin = Pin.new(p: position, number: pin_number, diameter: self.pin_diameter, 
                       drill_dia: self.drill_diameter)
         pin_number += 1
-        @callback.call(i, pin) unless @callback.nil?
         pin
       end
     end

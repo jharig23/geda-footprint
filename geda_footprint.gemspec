@@ -25,9 +25,9 @@ Gem::Specification.new do |s|
              "lib/geda_footprint/pad_line.rb",
              "lib/geda_footprint/pin_line.rb",
              "lib/geda_footprint/smd_two_pad.rb",
-	     "lib/geda_footprint/soic.rb",
-	     "lib/geda_footprint/dip.rb",
-	     "lib/geda_footprint/header.rb",
+             "lib/geda_footprint/soic.rb",
+             "lib/geda_footprint/dip.rb",
+             "lib/geda_footprint/header.rb",
              "lib/geda_footprint/quad_package.rb",
              "lib/geda_footprint/transformation.rb",
              "lib/geda_footprint/renderer.rb"]
